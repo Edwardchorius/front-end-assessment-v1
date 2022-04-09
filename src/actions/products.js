@@ -6,6 +6,7 @@ export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 
+//TODO is this part of the mock?
 const requestProducts = () => ({
   type: REQUEST_PRODUCTS,
 });

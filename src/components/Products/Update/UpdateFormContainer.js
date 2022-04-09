@@ -18,7 +18,9 @@ class UpdateFormContainer extends Component {
             <>
                 <Link to='/'>Home</Link>
                 <ProductForm
-                    onSave={(data) => {return}}
+                    onSave={(data) => {
+                        dispatch(updateProductForm(product.id, data))
+                    }}
                     product={product}
                     categories={categories}
                 />
@@ -30,7 +32,9 @@ class UpdateFormContainer extends Component {
 UpdateFormContainer.propTypes = {
     product: PropTypes.object,
     categories: PropTypes.array,
-    history: PropTypes.object,
+    //Why do we need this here?
+    // history: PropTypes.object,
+    dispatch: PropTypes.func
 };
 
 const mapStateToProps = (state, {productId}) => {

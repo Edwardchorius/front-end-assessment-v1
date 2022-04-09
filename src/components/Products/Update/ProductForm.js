@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Button, Form, FormFeedback, FormGroup, Input, Label} from 'reactstrap';
 import {getMultiSelected, repeat} from '../../../utils';
-import {isCategoriesValid, isNameValid} from './validators';
+import {isCategoriesValid, isNameValid, isExpirationDateValid} from './validators';
 
 const ProductForm = (props) => {
     const {product = {}} = props;
@@ -14,6 +14,12 @@ const ProductForm = (props) => {
     const [receiptDate, setReceiptDate] = useState(product.receiptDate || '');
     const [expirationDate, setExpirationDate] = useState(product.expirationDate || '');
     const [featured, setFeatured] = useState(product.featured);
+
+    useEffect(() => {
+        if(itemsInStock < 0) {
+            setItemsInStock(0)
+        }
+    }, [itemsInStock])
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -88,13 +94,18 @@ const ProductForm = (props) => {
             </FormGroup>
             <FormGroup>
                 <Label for="itemsInStock">Items In Stock</Label>
-                <Input type="number" name="itemsInStock" id="itemsInStock" value={itemsInStock}
-                       onChange={({target}) => setItemsInStock(target.value)}
+                <Input 
+                type="number"
+                name="itemsInStock"
+                id="itemsInStock"
+                value={itemsInStock}
+                onChange={({target}) => setItemsInStock(target.value)}
                 />
             </FormGroup>
             <FormGroup>
                 <Label for="expirationDate">Expiration date</Label>
                 <Input
+                    invalid={!isExpirationDateValid(expirationDate)}
                     type="date"
                     name="expirationDate"
                     id="expirationDate"
@@ -112,8 +123,10 @@ const ProductForm = (props) => {
             </FormGroup>
             <FormGroup check>
                 <Label check>
-                    <Input type="checkbox" checked={featured}
-                           onChange={({target}) => setFeatured(target.checked)}
+                    <Input 
+                    type="checkbox"
+                    checked={featured || rating > 8}
+                    onChange={({target}) => setFeatured(target.checked)}
                     />{' '}
                     Featured
                 </Label>
